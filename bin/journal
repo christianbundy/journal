@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
 
 depends_on () {
-  command -v "$0" >/dev/null 2>&1 || {
-    echo "Dependency \"$0\" not found. Aborting." >&2;
+  DEPENDENCY="$1"
+  LIBRARY="$2"
+
+  command -v "$1" >/dev/null 2>&1 || {
+    if [ ! -z "$LIBRARY" ]; then
+      LIBRARY_MESSAGE="This is usually packaged as \"$LIBRARY\"."
+    fi
+
+    echo "Dependency \"$DEPENDENCY\" not found. $LIBRARY_MESSAGE" >&2;
     exit 1;
   }
 }
 
 help () {
-  depends_on cat
+  depends_on cat coreutils
 
   cat << END
   Usage:
@@ -21,7 +28,7 @@ END
 }
 
 get_base_dir () {
-  depends_on dirname
+  depends_on dirname coreutils
   DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/..
 
   echo "$DIR"
@@ -29,7 +36,7 @@ get_base_dir () {
 
 # get_calendar_date $STRING_DATE
 get_calendar_date () {
-  depends_on gdate
+  depends_on gdate coreutils
 
   STRING_DATE="$@"     # concat args to a string
   PATTERN="%Y-%m-%d"   # use ISO 8601 date pattern
