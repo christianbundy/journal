@@ -56,6 +56,16 @@ get_config_path () {
   echo "$CONFIG_PATH"
 }
 
+set_vim_paths () {
+  ENTRY_PATH="$1"
+  TEMPLATE_PATH="$2"
+  if [ ! -f "$ENTRY_PATH" ]; then
+    VIM_CMD=":r $TEMPLATE_PATH"
+  fi
+
+  exec vim -c "$VIM_COMD" "$ENTRY_PATH"
+}
+
 case "$1" in
   -h | --help)
     help
@@ -66,8 +76,7 @@ case "$1" in
     CALENDAR_DATE=$(get_calendar_date "$STRING_DATE")
     ENTRY_PATH=$(get_entry_path "$CALENDAR_DATE")
     TEMPLATE_PATH=$(get_config_path "template.md")
-
-    exec vim -c ":r $TEMPLATE_PATH" "$ENTRY_PATH"
+    set_vim_paths "$ENTRY_PATH" "$TEMPLATE_PATH"
   ;;
 esac
 
