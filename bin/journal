@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+trap "exit 1" TERM
+export TOP_PID=$$
+
 depends_on () {
   DEPENDENCY="$1"
   LIBRARY="$2"
@@ -10,7 +13,7 @@ depends_on () {
     fi
 
     echo "Dependency \"$DEPENDENCY\" not found. $LIBRARY_MESSAGE" >&2;
-    exit 1;
+    kill -s TERM $TOP_PID
   }
 }
 
