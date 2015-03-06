@@ -63,7 +63,7 @@ set_vim_paths () {
     VIM_CMD=":r $TEMPLATE_PATH"
   fi
 
-  exec vim -c "$VIM_COMD" "$ENTRY_PATH"
+  exec vim -c "$VIM_CMD" "$ENTRY_PATH"
 }
 
 case "$1" in
